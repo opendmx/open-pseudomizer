@@ -1,0 +1,66 @@
+{
+  "names": {
+    "firstNames": [
+      "Alice",
+      "Bob",
+      "Charlie",
+      "Diana",
+      "Edward",
+      "Fiona",
+      "George",
+      "Hannah"
+    ],
+    "lastNames": [
+      "Anderson",
+      "Brown",
+      "Clark",
+      "Davis",
+      "Evans",
+      "Foster",
+      "Green",
+      "Harris"
+    ]
+  },
+  "addresses": {
+    "streets": [
+      "123 Maple Street",
+      "456 Oak Avenue",
+      "789 Pine Road",
+      "321 Elm Boulevard",
+      "654 Cedar Lane",
+      "987 Birch Drive",
+      "147 Willow Way",
+      "258 Ash Court"
+    ],
+    "cities": [
+      "Springfield",
+      "Portland",
+      "Austin",
+      "Seattle",
+      "Denver",
+      "Boston",
+      "Chicago",
+      "Miami"
+    ],
+    "buildings": [
+      "Building A",
+      "Tower B",
+      "Suite 100",
+      "Floor 5",
+      "Office 201",
+      "Unit 3B",
+      "Apt 42",
+      "Room 15"
+    ],
+    "apartments": [
+      "Apt 1A",
+      "Apt 2B",
+      "Apt 3C",
+      "Apt 4D",
+      "Unit 101",
+      "Unit 202",
+      "Unit 303",
+      "Unit 404"
+    ]
+  }
+}

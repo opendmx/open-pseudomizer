@@ -1,6 +1,7 @@
 // Application state
 let originalData = null;
 let pseudonymizedData = null;
+let customData = null;
 let apiToken = '';
 
 // DOM Elements
@@ -8,6 +9,8 @@ const apiTokenInput = document.getElementById('apiToken');
 const promptTextArea = document.getElementById('promptText');
 const fileInput = document.getElementById('fileInput');
 const fileNameDisplay = document.getElementById('fileName');
+const customDataInput = document.getElementById('customDataInput');
+const customDataFileNameDisplay = document.getElementById('customDataFileName');
 const pseudonymizeBtn = document.getElementById('pseudonymizeBtn');
 const loadingSection = document.getElementById('loadingSection');
 const resultsSection = document.getElementById('resultsSection');
@@ -19,6 +22,7 @@ const resetBtn = document.getElementById('resetBtn');
 // Event Listeners
 apiTokenInput.addEventListener('input', updateButtonState);
 fileInput.addEventListener('change', handleFileSelect);
+customDataInput.addEventListener('change', handleCustomDataSelect);
 pseudonymizeBtn.addEventListener('click', handlePseudonymize);
 downloadBtn.addEventListener('click', handleDownload);
 resetBtn.addEventListener('click', handleReset);
@@ -54,6 +58,46 @@ function handleFileSelect(event) {
             showError('Invalid JSON file. Please upload a valid JSON file.');
             originalData = null;
             updateButtonState();
+        }
+    };
+    reader.readAsText(file);
+}
+
+function handleCustomDataSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    customDataFileNameDisplay.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const parsedData = JSON.parse(e.target.result);
+            
+            // Validate custom data structure
+            if (!parsedData || typeof parsedData !== 'object') {
+                throw new Error('Custom data must be a JSON object');
+            }
+            
+            // Check if at least one category exists
+            const hasNames = parsedData.names && (parsedData.names.firstNames || parsedData.names.lastNames);
+            const hasAddresses = parsedData.addresses && (
+                parsedData.addresses.streets || 
+                parsedData.addresses.cities || 
+                parsedData.addresses.buildings || 
+                parsedData.addresses.apartments
+            );
+            
+            if (!hasNames && !hasAddresses) {
+                throw new Error('Custom data must contain at least names or addresses');
+            }
+            
+            customData = parsedData;
+            hideError();
+        } catch (error) {
+            showError(`Invalid custom data JSON file: ${error.message}. Please check the file format.`);
+            customData = null;
+            customDataFileNameDisplay.textContent = 'Optional: Choose custom data file...';
         }
     };
     reader.readAsText(file);
@@ -264,8 +308,11 @@ function handleDownload() {
 function handleReset() {
     originalData = null;
     pseudonymizedData = null;
+    customData = null;
     fileInput.value = '';
+    customDataInput.value = '';
     fileNameDisplay.textContent = 'Choose a JSON file...';
+    customDataFileNameDisplay.textContent = 'Optional: Choose custom data file...';
     hideResults();
     hideError();
     updateButtonState();
