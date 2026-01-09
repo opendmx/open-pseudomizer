@@ -71,10 +71,30 @@ function handleCustomDataSelect(event) {
     const reader = new FileReader();
     reader.onload = (e) => {
         try {
-            customData = JSON.parse(e.target.result);
+            const parsedData = JSON.parse(e.target.result);
+            
+            // Validate custom data structure
+            if (!parsedData || typeof parsedData !== 'object') {
+                throw new Error('Custom data must be a JSON object');
+            }
+            
+            // Check if at least one category exists
+            const hasNames = parsedData.names && (parsedData.names.firstNames || parsedData.names.lastNames);
+            const hasAddresses = parsedData.addresses && (
+                parsedData.addresses.streets || 
+                parsedData.addresses.cities || 
+                parsedData.addresses.buildings || 
+                parsedData.addresses.apartments
+            );
+            
+            if (!hasNames && !hasAddresses) {
+                throw new Error('Custom data must contain at least names or addresses');
+            }
+            
+            customData = parsedData;
             hideError();
         } catch (error) {
-            showError('Invalid custom data JSON file. Please upload a valid JSON file.');
+            showError(`Invalid custom data JSON file: ${error.message}. Please check the file format.`);
             customData = null;
             customDataFileNameDisplay.textContent = 'Optional: Choose custom data file...';
         }
