@@ -140,6 +140,31 @@ Tested in:
 - The API might be temporarily unavailable
 - Try again in a few moments
 
+## Deployment
+
+This application can be hosted on GitHub Pages for easy access:
+
+### Automatic Deployment
+
+The repository includes a GitHub Actions workflow that automatically deploys to GitHub Pages on every push to the main branch.
+
+### Setup GitHub Pages
+
+1. Go to your repository's **Settings** → **Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Push changes to the main branch - the workflow will automatically deploy
+4. Your site will be available at `https://[username].github.io/open-pseudomizer/`
+
+### Manual Deployment
+
+You can also host the application anywhere that serves static files:
+- GitHub Pages
+- Netlify
+- Vercel
+- Any web server
+
+Simply upload the `index.html`, `styles.css`, `app.js`, and `example-data.json` files.
+
 ## Development
 
 To modify or extend the application:
