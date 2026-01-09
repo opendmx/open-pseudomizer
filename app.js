@@ -125,7 +125,14 @@ async function pseudonymizeData(data) {
     const dataStr = JSON.stringify(data, null, 2);
 
     // Get the prompt template from the textarea
-    const promptTemplate = promptTextArea.value.trim();
+    let promptTemplate = promptTextArea.value.trim();
+    
+    // If custom data is available, add instructions to use it
+    if (customData) {
+        const customDataStr = JSON.stringify(customData, null, 2);
+        const customDataInstructions = `\n\nIMPORTANT: Use the following custom data for pseudonymization:\n${customDataStr}\n\nWhen replacing names, use names from the provided firstNames and lastNames lists. When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.`;
+        promptTemplate = promptTemplate + customDataInstructions;
+    }
     
     // Replace {DATA} placeholder with actual data
     const prompt = promptTemplate.replace('{DATA}', dataStr);
