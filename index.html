@@ -31,6 +31,20 @@
                     <span id="fileName">Choose a JSON file...</span>
                 </label>
             </div>
+            
+            <h3>Custom Data (Optional)</h3>
+            <p class="custom-data-description">
+                Upload a JSON file with custom names and addresses to use for pseudonymization.
+                <a href="example-custom-data.json" download>Download example format</a>
+            </p>
+            <div class="file-input-wrapper">
+                <input type="file" id="customDataInput" accept=".json" />
+                <label for="customDataInput" class="file-label secondary">
+                    <span class="file-icon">📄</span>
+                    <span id="customDataFileName">Optional: Choose custom data file...</span>
+                </label>
+            </div>
+            
             <button id="pseudonymizeBtn" class="btn btn-primary" disabled>
                 Pseudonymize Data
             </button>

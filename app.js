@@ -1,12 +1,15 @@
 // Application state
 let originalData = null;
 let pseudonymizedData = null;
+let customData = null;
 let apiToken = '';
 
 // DOM Elements
 const apiTokenInput = document.getElementById('apiToken');
 const fileInput = document.getElementById('fileInput');
 const fileNameDisplay = document.getElementById('fileName');
+const customDataInput = document.getElementById('customDataInput');
+const customDataFileNameDisplay = document.getElementById('customDataFileName');
 const pseudonymizeBtn = document.getElementById('pseudonymizeBtn');
 const loadingSection = document.getElementById('loadingSection');
 const resultsSection = document.getElementById('resultsSection');
@@ -18,6 +21,7 @@ const resetBtn = document.getElementById('resetBtn');
 // Event Listeners
 apiTokenInput.addEventListener('input', updateButtonState);
 fileInput.addEventListener('change', handleFileSelect);
+customDataInput.addEventListener('change', handleCustomDataSelect);
 pseudonymizeBtn.addEventListener('click', handlePseudonymize);
 downloadBtn.addEventListener('click', handleDownload);
 resetBtn.addEventListener('click', handleReset);
@@ -58,6 +62,26 @@ function handleFileSelect(event) {
     reader.readAsText(file);
 }
 
+function handleCustomDataSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    customDataFileNameDisplay.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            customData = JSON.parse(e.target.result);
+            hideError();
+        } catch (error) {
+            showError('Invalid custom data JSON file. Please upload a valid JSON file.');
+            customData = null;
+            customDataFileNameDisplay.textContent = 'Optional: Choose custom data file...';
+        }
+    };
+    reader.readAsText(file);
+}
+
 async function handlePseudonymize() {
     if (!originalData || !apiToken) return;
 
@@ -79,7 +103,7 @@ async function pseudonymizeData(data) {
     // Convert data to string for AI processing
     const dataStr = JSON.stringify(data, null, 2);
 
-    const prompt = `You are a data pseudonymization expert. Analyze the following JSON data and pseudonymize all personal information (PII) including:
+    let prompt = `You are a data pseudonymization expert. Analyze the following JSON data and pseudonymize all personal information (PII) including:
 - Names (first names, last names, full names)
 - Email addresses
 - Phone numbers
@@ -93,7 +117,29 @@ Replace these with realistic but fake data that maintains the same format and st
 - Emails should be replaced with other emails
 - Phone numbers should maintain the same format
 - Keep the JSON structure identical
+`;
 
+    // Add custom data instructions if available
+    if (customData) {
+        prompt += `
+IMPORTANT: Use the following custom data for pseudonymization when applicable:
+
+Custom Data:
+${JSON.stringify(customData, null, 2)}
+
+Instructions for using custom data:
+- For names: Use first names from "names.firstNames" and last names from "names.lastNames"
+- For street addresses: Use values from "addresses.streets"
+- For cities: Use values from "addresses.cities"
+- For buildings: Use values from "addresses.buildings"
+- For apartments: Use values from "addresses.apartments"
+- Randomly select values from these lists
+- If a field doesn't match any custom data category, generate realistic fake data as usual
+
+`;
+    }
+
+    prompt += `
 Return ONLY the pseudonymized JSON data, no explanations or markdown formatting.
 
 Data to pseudonymize:
@@ -277,8 +323,11 @@ function handleDownload() {
 function handleReset() {
     originalData = null;
     pseudonymizedData = null;
+    customData = null;
     fileInput.value = '';
+    customDataInput.value = '';
     fileNameDisplay.textContent = 'Choose a JSON file...';
+    customDataFileNameDisplay.textContent = 'Optional: Choose custom data file...';
     hideResults();
     hideError();
     updateButtonState();

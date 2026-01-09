@@ -14,6 +14,7 @@ Open Pseudomizer is a browser-based application that uses AI (powered by GitHub 
 - 📊 **Visual Comparison**: See before/after changes in an easy-to-read format
 - 💾 **Export Results**: Download pseudonymized data as JSON
 - 🎯 **Smart Pseudonymization**: Maintains data format and structure
+- 📝 **Custom Data**: Optional custom addresses and names for more controlled pseudonymization
 
 ## Pseudonymized Data Types
 
@@ -65,21 +66,53 @@ The application can detect and pseudonymize:
    - Select a JSON file containing data with PII
    - Try the included `example-data.json` file to test
 
-4. **Pseudonymize**
+4. **Upload Custom Data (Optional)**
+   - Click "Optional: Choose custom data file..."
+   - Select a JSON file with custom names and addresses
+   - Download the `example-custom-data.json` file as a template
+   - This allows you to control what fake data is used for pseudonymization
+
+5. **Pseudonymize**
    - Click "Pseudonymize Data"
    - Wait for the AI to process your data (usually 5-30 seconds)
 
-5. **Review Results**
+6. **Review Results**
    - **Original Data**: View your original dataset
    - **Pseudonymized Data**: View the pseudonymized version
    - **Comparison**: See a side-by-side comparison of changes
 
-6. **Download**
+7. **Download**
    - Click "Download Pseudonymized Data" to save the results
 
 ## Example Data
 
 An example dataset is provided in `example-data.json`. It contains sample user data with various types of PII that will be pseudonymized.
+
+## Custom Data Format
+
+You can optionally provide custom data to control what values are used during pseudonymization. Upload a JSON file with the following structure:
+
+```json
+{
+  "names": {
+    "firstNames": ["Alice", "Bob", "Charlie", ...],
+    "lastNames": ["Anderson", "Brown", "Clark", ...]
+  },
+  "addresses": {
+    "streets": ["123 Maple Street", "456 Oak Avenue", ...],
+    "cities": ["Springfield", "Portland", "Austin", ...],
+    "buildings": ["Building A", "Tower B", "Suite 100", ...],
+    "apartments": ["Apt 1A", "Unit 101", ...]
+  }
+}
+```
+
+An example custom data file is provided in `example-custom-data.json`. When custom data is provided:
+- Names will be randomly selected from your `firstNames` and `lastNames` lists
+- Street addresses will use values from your `streets` list
+- Cities will use values from your `cities` list
+- Building and apartment information will use values from those respective lists
+- Other PII (emails, phone numbers, etc.) will still be generated automatically
 
 ## How It Works
 

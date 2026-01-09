@@ -95,7 +95,8 @@ h2 {
     margin-bottom: 20px;
 }
 
-#fileInput {
+#fileInput,
+#customDataInput {
     display: none;
 }
 
@@ -111,17 +112,55 @@ h2 {
     transition: all 0.3s;
 }
 
+.file-label.secondary {
+    padding: 15px;
+    border: 2px dashed #ccc;
+}
+
 .file-label:hover {
     border-color: #667eea;
     background: #f5f7ff;
+}
+
+.file-label.secondary:hover {
+    border-color: #999;
+    background: #f9f9f9;
 }
 
 .file-icon {
     font-size: 2rem;
 }
 
-#fileName {
+#fileName,
+#customDataFileName {
     color: #666;
+}
+
+#customDataFileName {
+    font-size: 0.9rem;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.custom-data-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.custom-data-description a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.custom-data-description a:hover {
+    text-decoration: underline;
 }
 
 .btn {
