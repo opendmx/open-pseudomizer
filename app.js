@@ -4,6 +4,10 @@ let pseudonymizedData = null;
 let customData = null;
 let apiToken = '';
 
+// Constants for custom data validation
+const CUSTOM_DATA_NAME_PROPS = ['firstNames', 'lastNames'];
+const CUSTOM_DATA_ADDRESS_PROPS = ['streets', 'cities', 'buildings', 'apartments'];
+
 // DOM Elements
 const apiTokenInput = document.getElementById('apiToken');
 const promptTextArea = document.getElementById('promptText');
@@ -80,13 +84,11 @@ function handleCustomDataSelect(event) {
             }
             
             // Check if at least one category exists with valid array data
-            const nameProps = ['firstNames', 'lastNames'];
-            const hasNames = parsedData.names && nameProps.some(prop => 
+            const hasNames = parsedData.names && CUSTOM_DATA_NAME_PROPS.some(prop => 
                 Array.isArray(parsedData.names[prop]) && parsedData.names[prop].length > 0
             );
             
-            const addressProps = ['streets', 'cities', 'buildings', 'apartments'];
-            const hasAddresses = parsedData.addresses && addressProps.some(prop => 
+            const hasAddresses = parsedData.addresses && CUSTOM_DATA_ADDRESS_PROPS.some(prop => 
                 Array.isArray(parsedData.addresses[prop]) && parsedData.addresses[prop].length > 0
             );
             
@@ -132,8 +134,7 @@ function buildCustomDataInstructions(customData) {
     
     // Add specific instructions based on available data
     if (customData.names) {
-        const nameProps = ['firstNames', 'lastNames'];
-        const hasNameData = nameProps.some(prop => 
+        const hasNameData = CUSTOM_DATA_NAME_PROPS.some(prop => 
             Array.isArray(customData.names[prop]) && customData.names[prop].length > 0
         );
         if (hasNameData) {
@@ -142,8 +143,7 @@ function buildCustomDataInstructions(customData) {
     }
     
     if (customData.addresses) {
-        const addressProps = ['streets', 'cities', 'buildings', 'apartments'];
-        const hasAddressData = addressProps.some(prop => 
+        const hasAddressData = CUSTOM_DATA_ADDRESS_PROPS.some(prop => 
             Array.isArray(customData.addresses[prop]) && customData.addresses[prop].length > 0
         );
         if (hasAddressData) {
