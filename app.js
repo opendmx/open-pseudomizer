@@ -8,6 +8,19 @@ let apiToken = '';
 const CUSTOM_DATA_NAME_PROPS = ['firstNames', 'lastNames'];
 const CUSTOM_DATA_ADDRESS_PROPS = ['streets', 'cities', 'buildings', 'apartments'];
 
+// Helper functions for custom data validation
+function hasValidNameData(data) {
+    return data && data.names && CUSTOM_DATA_NAME_PROPS.some(prop => 
+        Array.isArray(data.names[prop]) && data.names[prop].length > 0
+    );
+}
+
+function hasValidAddressData(data) {
+    return data && data.addresses && CUSTOM_DATA_ADDRESS_PROPS.some(prop => 
+        Array.isArray(data.addresses[prop]) && data.addresses[prop].length > 0
+    );
+}
+
 // DOM Elements
 const apiTokenInput = document.getElementById('apiToken');
 const promptTextArea = document.getElementById('promptText');
@@ -84,13 +97,8 @@ function handleCustomDataSelect(event) {
             }
             
             // Check if at least one category exists with valid array data
-            const hasNames = parsedData.names && CUSTOM_DATA_NAME_PROPS.some(prop => 
-                Array.isArray(parsedData.names[prop]) && parsedData.names[prop].length > 0
-            );
-            
-            const hasAddresses = parsedData.addresses && CUSTOM_DATA_ADDRESS_PROPS.some(prop => 
-                Array.isArray(parsedData.addresses[prop]) && parsedData.addresses[prop].length > 0
-            );
+            const hasNames = hasValidNameData(parsedData);
+            const hasAddresses = hasValidAddressData(parsedData);
             
             if (!hasNames && !hasAddresses) {
                 throw new Error('Custom data must contain at least one non-empty array of names or addresses');
@@ -133,22 +141,12 @@ function buildCustomDataInstructions(customData) {
     instructions.push('');
     
     // Add specific instructions based on available data
-    if (customData.names) {
-        const hasNameData = CUSTOM_DATA_NAME_PROPS.some(prop => 
-            Array.isArray(customData.names[prop]) && customData.names[prop].length > 0
-        );
-        if (hasNameData) {
-            instructions.push('When replacing names, use names from the provided firstNames and lastNames lists.');
-        }
+    if (hasValidNameData(customData)) {
+        instructions.push('When replacing names, use names from the provided firstNames and lastNames lists.');
     }
     
-    if (customData.addresses) {
-        const hasAddressData = CUSTOM_DATA_ADDRESS_PROPS.some(prop => 
-            Array.isArray(customData.addresses[prop]) && customData.addresses[prop].length > 0
-        );
-        if (hasAddressData) {
-            instructions.push('When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.');
-        }
+    if (hasValidAddressData(customData)) {
+        instructions.push('When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.');
     }
     
     return instructions.join('\n');
