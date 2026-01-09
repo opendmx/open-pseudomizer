@@ -130,16 +130,18 @@ function buildCustomDataInstructions(customData) {
     
     // Add specific instructions based on available data
     if (customData.names) {
-        if (customData.names.firstNames || customData.names.lastNames) {
+        const hasNameData = (customData.names.firstNames && customData.names.firstNames.length > 0) ||
+                           (customData.names.lastNames && customData.names.lastNames.length > 0);
+        if (hasNameData) {
             instructions.push('When replacing names, use names from the provided firstNames and lastNames lists.');
         }
     }
     
     if (customData.addresses) {
-        const hasAddressData = customData.addresses.streets || 
-                              customData.addresses.cities || 
-                              customData.addresses.buildings || 
-                              customData.addresses.apartments;
+        const hasAddressData = (customData.addresses.streets && customData.addresses.streets.length > 0) || 
+                              (customData.addresses.cities && customData.addresses.cities.length > 0) || 
+                              (customData.addresses.buildings && customData.addresses.buildings.length > 0) || 
+                              (customData.addresses.apartments && customData.addresses.apartments.length > 0);
         if (hasAddressData) {
             instructions.push('When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.');
         }
@@ -158,7 +160,7 @@ async function pseudonymizeData(data) {
     // If custom data is available, add instructions to use it
     if (customData) {
         const customDataInstructions = buildCustomDataInstructions(customData);
-        promptTemplate = promptTemplate + customDataInstructions;
+        promptTemplate += customDataInstructions;
     }
     
     // Replace {DATA} placeholder with actual data
