@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Pseudomizer - Data Pseudonymization Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔒 Open Pseudomizer</h1>
+            <p class="subtitle">AI-Powered Data Pseudonymization</p>
+        </header>
+
+        <div class="config-section">
+            <h2>Configuration</h2>
+            <div class="input-group">
+                <label for="apiToken">GitHub Token (with models:read scope):</label>
+                <input type="password" id="apiToken" placeholder="github_pat_..." />
+                <small>Get your token at: <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings</a></small>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <h2>Upload Data</h2>
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" accept=".json" />
+                <label for="fileInput" class="file-label">
+                    <span class="file-icon">📁</span>
+                    <span id="fileName">Choose a JSON file...</span>
+                </label>
+            </div>
+            <button id="pseudonymizeBtn" class="btn btn-primary" disabled>
+                Pseudonymize Data
+            </button>
+        </div>
+
+        <div id="loadingSection" class="loading-section" style="display: none;">
+            <div class="spinner"></div>
+            <p>Processing your data with AI...</p>
+        </div>
+
+        <div id="resultsSection" class="results-section" style="display: none;">
+            <h2>Results</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="original">Original Data</button>
+                <button class="tab-btn" data-tab="pseudonymized">Pseudonymized Data</button>
+                <button class="tab-btn" data-tab="comparison">Comparison</button>
+            </div>
+
+            <div class="tab-content">
+                <div id="originalTab" class="tab-pane active">
+                    <pre id="originalData"></pre>
+                </div>
+                <div id="pseudonymizedTab" class="tab-pane">
+                    <pre id="pseudonymizedData"></pre>
+                </div>
+                <div id="comparisonTab" class="tab-pane">
+                    <div id="comparisonView"></div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="downloadBtn" class="btn btn-secondary">
+                    Download Pseudonymized Data
+                </button>
+                <button id="resetBtn" class="btn btn-tertiary">
+                    Start Over
+                </button>
+            </div>
+        </div>
+
+        <div id="errorSection" class="error-section" style="display: none;">
+            <h3>❌ Error</h3>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Open Pseudomizer - AI-powered data pseudonymization using GitHub Models</p>
+        <p><small>Your data is processed client-side and sent only to GitHub Models API</small></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
