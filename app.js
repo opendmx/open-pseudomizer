@@ -120,6 +120,34 @@ async function handlePseudonymize() {
     }
 }
 
+function buildCustomDataInstructions(customData) {
+    const customDataStr = JSON.stringify(customData, null, 2);
+    const instructions = [];
+    
+    instructions.push('\n\nIMPORTANT: Use the following custom data for pseudonymization:');
+    instructions.push(customDataStr);
+    instructions.push('');
+    
+    // Add specific instructions based on available data
+    if (customData.names) {
+        if (customData.names.firstNames || customData.names.lastNames) {
+            instructions.push('When replacing names, use names from the provided firstNames and lastNames lists.');
+        }
+    }
+    
+    if (customData.addresses) {
+        const hasAddressData = customData.addresses.streets || 
+                              customData.addresses.cities || 
+                              customData.addresses.buildings || 
+                              customData.addresses.apartments;
+        if (hasAddressData) {
+            instructions.push('When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.');
+        }
+    }
+    
+    return instructions.join('\n');
+}
+
 async function pseudonymizeData(data) {
     // Convert data to string for AI processing
     const dataStr = JSON.stringify(data, null, 2);
@@ -129,8 +157,7 @@ async function pseudonymizeData(data) {
     
     // If custom data is available, add instructions to use it
     if (customData) {
-        const customDataStr = JSON.stringify(customData, null, 2);
-        const customDataInstructions = `\n\nIMPORTANT: Use the following custom data for pseudonymization:\n${customDataStr}\n\nWhen replacing names, use names from the provided firstNames and lastNames lists. When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.`;
+        const customDataInstructions = buildCustomDataInstructions(customData);
         promptTemplate = promptTemplate + customDataInstructions;
     }
     
