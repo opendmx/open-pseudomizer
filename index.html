@@ -20,6 +20,29 @@
                 <input type="password" id="apiToken" placeholder="github_pat_..." />
                 <small>Get your token at: <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings</a></small>
             </div>
+            <div class="input-group">
+                <label for="promptText">Pseudonymization Prompt:</label>
+                <textarea id="promptText" rows="12" placeholder="Enter your custom prompt...">You are a data pseudonymization expert. Analyze the following JSON data and pseudonymize all personal information (PII) including:
+- Names (first names, last names, full names)
+- Email addresses
+- Phone numbers
+- Addresses (street addresses, cities if combined with other PII)
+- Social security numbers
+- Credit card numbers
+- Any other identifiable information
+
+Replace these with realistic but fake data that maintains the same format and structure. For example:
+- Names should be replaced with other names
+- Emails should be replaced with other emails
+- Phone numbers should maintain the same format
+- Keep the JSON structure identical
+
+Return ONLY the pseudonymized JSON data, no explanations or markdown formatting.
+
+Data to pseudonymize:
+{DATA}</textarea>
+                <small>Customize the AI instructions. Use <code>{DATA}</code> as a placeholder for the uploaded JSON data.</small>
+            </div>
         </div>
 
         <div class="upload-section">
