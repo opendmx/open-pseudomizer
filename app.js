@@ -6,6 +6,7 @@ let apiToken = '';
 
 // DOM Elements
 const apiTokenInput = document.getElementById('apiToken');
+const promptTextArea = document.getElementById('promptText');
 const fileInput = document.getElementById('fileInput');
 const fileNameDisplay = document.getElementById('fileName');
 const customDataInput = document.getElementById('customDataInput');
@@ -123,47 +124,11 @@ async function pseudonymizeData(data) {
     // Convert data to string for AI processing
     const dataStr = JSON.stringify(data, null, 2);
 
-    let prompt = `You are a data pseudonymization expert. Analyze the following JSON data and pseudonymize all personal information (PII) including:
-- Names (first names, last names, full names)
-- Email addresses
-- Phone numbers
-- Addresses (street addresses, cities if combined with other PII)
-- Social security numbers
-- Credit card numbers
-- Any other identifiable information
-
-Replace these with realistic but fake data that maintains the same format and structure. For example:
-- Names should be replaced with other names
-- Emails should be replaced with other emails
-- Phone numbers should maintain the same format
-- Keep the JSON structure identical
-`;
-
-    // Add custom data instructions if available
-    if (customData) {
-        prompt += `
-IMPORTANT: Use the following custom data for pseudonymization when applicable:
-
-Custom Data:
-${JSON.stringify(customData, null, 2)}
-
-Instructions for using custom data:
-- For names: Use first names from "names.firstNames" and last names from "names.lastNames"
-- For street addresses: Use values from "addresses.streets"
-- For cities: Use values from "addresses.cities"
-- For buildings: Use values from "addresses.buildings"
-- For apartments: Use values from "addresses.apartments"
-- Randomly select values from these lists
-- If a field doesn't match any custom data category, generate realistic fake data as usual
-
-`;
-    }
-
-    prompt += `
-Return ONLY the pseudonymized JSON data, no explanations or markdown formatting.
-
-Data to pseudonymize:
-${dataStr}`;
+    // Get the prompt template from the textarea
+    const promptTemplate = promptTextArea.value.trim();
+    
+    // Replace {DATA} placeholder with actual data
+    const prompt = promptTemplate.replace('{DATA}', dataStr);
 
     try {
         const response = await callGitHubModelsAPI(prompt);
