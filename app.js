@@ -131,7 +131,9 @@ function buildCustomDataInstructions(customData) {
     // Add specific instructions based on available data
     if (customData.names) {
         const nameProps = ['firstNames', 'lastNames'];
-        const hasNameData = nameProps.some(prop => customData.names[prop]?.length > 0);
+        const hasNameData = nameProps.some(prop => 
+            Array.isArray(customData.names[prop]) && customData.names[prop].length > 0
+        );
         if (hasNameData) {
             instructions.push('When replacing names, use names from the provided firstNames and lastNames lists.');
         }
@@ -139,7 +141,9 @@ function buildCustomDataInstructions(customData) {
     
     if (customData.addresses) {
         const addressProps = ['streets', 'cities', 'buildings', 'apartments'];
-        const hasAddressData = addressProps.some(prop => customData.addresses[prop]?.length > 0);
+        const hasAddressData = addressProps.some(prop => 
+            Array.isArray(customData.addresses[prop]) && customData.addresses[prop].length > 0
+        );
         if (hasAddressData) {
             instructions.push('When replacing addresses, use addresses from the provided streets, cities, buildings, and apartments lists. Randomly combine these elements to create realistic addresses.');
         }
