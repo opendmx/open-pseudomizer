@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1-555-123-4567",
+      "address": {
+        "street": "123 Main Street",
+        "city": "Springfield",
+        "state": "IL",
+        "zipCode": "62701",
+        "country": "USA"
+      },
+      "ssn": "123-45-6789",
+      "dateOfBirth": "1985-03-15",
+      "accountNumber": "ACC-2024-001"
+    },
+    {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "phone": "+1-555-987-6543",
+      "address": {
+        "street": "456 Oak Avenue",
+        "city": "Portland",
+        "state": "OR",
+        "zipCode": "97201",
+        "country": "USA"
+      },
+      "ssn": "987-65-4321",
+      "dateOfBirth": "1990-07-22",
+      "accountNumber": "ACC-2024-002"
+    },
+    {
+      "id": 3,
+      "firstName": "Robert",
+      "lastName": "Johnson",
+      "email": "robert.johnson@example.com",
+      "phone": "+1-555-246-8135",
+      "address": {
+        "street": "789 Elm Boulevard",
+        "city": "Austin",
+        "state": "TX",
+        "zipCode": "78701",
+        "country": "USA"
+      },
+      "ssn": "456-78-9123",
+      "dateOfBirth": "1978-11-30",
+      "accountNumber": "ACC-2024-003"
+    }
+  ],
+  "metadata": {
+    "exportDate": "2024-01-15",
+    "recordCount": 3,
+    "dataSource": "Customer Database"
+  }
+}
