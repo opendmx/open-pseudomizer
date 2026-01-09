@@ -79,17 +79,19 @@ function handleCustomDataSelect(event) {
                 throw new Error('Custom data must be a JSON object');
             }
             
-            // Check if at least one category exists
-            const hasNames = parsedData.names && (parsedData.names.firstNames || parsedData.names.lastNames);
-            const hasAddresses = parsedData.addresses && (
-                parsedData.addresses.streets || 
-                parsedData.addresses.cities || 
-                parsedData.addresses.buildings || 
-                parsedData.addresses.apartments
+            // Check if at least one category exists with valid array data
+            const nameProps = ['firstNames', 'lastNames'];
+            const hasNames = parsedData.names && nameProps.some(prop => 
+                Array.isArray(parsedData.names[prop]) && parsedData.names[prop].length > 0
+            );
+            
+            const addressProps = ['streets', 'cities', 'buildings', 'apartments'];
+            const hasAddresses = parsedData.addresses && addressProps.some(prop => 
+                Array.isArray(parsedData.addresses[prop]) && parsedData.addresses[prop].length > 0
             );
             
             if (!hasNames && !hasAddresses) {
-                throw new Error('Custom data must contain at least names or addresses');
+                throw new Error('Custom data must contain at least one non-empty array of names or addresses');
             }
             
             customData = parsedData;
